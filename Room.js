@@ -51,6 +51,48 @@ class Room {
       member.send(JSON.stringify(data));
     }
   }
+
+  // returns array of members
+  getMembers() {
+    return [...this.members]
+  }
+
+  // returns a single member of a given name
+  getMember( name ) {
+    for( member of this.members ) {
+      if( name === member.name ) {
+        return member
+      }
+    }
+    throw new Error("no such member")
+  }
+
+  // returns true if there is a member with the given name
+  // returns false otherwise
+  hasMember( name ) {
+    for( let member of this.members ){
+      if( member.name === name ){
+        return true
+      }
+    }
+    return false
+  }
+
+  //returns a username and the rest of text if the text has a member's
+  // name at the beginning of it
+  seperateUserFromMsg( text ) {
+    for( let member of this.members ) {
+      if( text.startsWith( member.name ) ) {
+        return { 
+          member:member,
+          msg: text.slice( member.name.length ).trimStart()
+        }
+      }
+    }
+    throw new Error("no such member's name at the beginning of that text")
+  }
+
+
 }
 
 module.exports = Room;

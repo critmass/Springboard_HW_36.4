@@ -61,8 +61,21 @@ ws.onclose = function (evt) {
 $('form').submit(function (evt) {
   evt.preventDefault();
 
-  let data = {type: "chat", text: $("#m").val()};
+  const msgFormVal = $("#m").val()
+
+  let type = "chat"
+  let text = msgFormVal
+
+  if( msgFormVal.startsWith( "/" ) ){
+    type = msgFormVal.substring(1).toLowerCase().split( " ", 1)[0] 
+    text = msgFormVal.slice( type.length + 2 )
+  }
+
+  let data = {type, text};
+
+  console.log( data )
   ws.send(JSON.stringify(data));
+
 
   $('#m').val('');
 });
